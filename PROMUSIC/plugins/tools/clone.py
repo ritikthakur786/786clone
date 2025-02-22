@@ -101,8 +101,8 @@ async def clone_txt(client, message, _):
                 "name": bot.first_name,
                 "token": bot_token,
                 "username": bot.username,
-                "channel": "PURVI_SUPPORT",
-                "support": "PURVI_UPDATES",
+                "channel": "iamvillain77",
+                "support": "oldskoolgc",
                 "premium" : False,
                 "Date" : False,
             }
