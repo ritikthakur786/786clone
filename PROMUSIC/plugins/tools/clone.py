@@ -272,7 +272,6 @@ async def my_cloned_bots(client, message, _):
         await message.reply_text("An error occurred while fetching your cloned bots.")
 
 
-
 @app.on_message(filters.command("cloned"))
 @language
 async def list_cloned_bots(client, message, _):
@@ -284,24 +283,64 @@ async def list_cloned_bots(client, message, _):
 
         total_clones = len(cloned_bots)
         text = f"**Tᴏᴛᴀʟ Cʟᴏɴᴇᴅ Bᴏᴛs: `{total_clones}`**\n\n"
+        messages = []  # छोटे-छोटे मैसेज स्टोर करने के लिए लिस्ट
 
         for bot in cloned_bots:
+            user_id = bot.get("user_id")
+            if not user_id:
+                bot_info = f"⚠️ **Bᴏᴛ ID:** `{bot['bot_id']}` - Owner ID not found.\n\n"
+            else:
+                try:
+                    owner = await client.get_users(user_id)
+                    owner_name = owner.first_name or "Unknown"
+                    owner_profile_link = f"tg://user?id={user_id}"
+                except PeerIdInvalid:
+                    logging.warning(f"PeerIdInvalid for user_id: {user_id}")
+                    owner_name = "❌ Invalid User"
+                    owner_profile_link = "#"
+                except Exception as err:
+                    logging.exception(err)
+                    owner_name = "⚠️ Error Fetching Owner"
+                    owner_profile_link = "#"
 
-            # Fetch the bot owner's details using their user_id
-            owner = await client.get_users(bot['user_id'])
-            
-            # Prepare the profile link and first name
-            owner_name = owner.first_name
-            owner_profile_link = f"tg://user?id={bot['user_id']}"
+                bot_info = (
+                    f"**Bᴏᴛ ID:** `{bot['bot_id']}`\n"
+                    f"**Bᴏᴛ Nᴀᴍᴇ:** {bot['name']}\n"
+                    f"**Bᴏᴛ Usᴇʀɴᴀᴍᴇ:** @{bot['username']}\n"
+                    f"**Oᴡɴᴇʀ:** [{owner_name}]({owner_profile_link})\n\n"
+                )
 
-            text += f"**Bᴏᴛ ID:** `{bot['bot_id']}`\n"
-            text += f"**Bᴏᴛ Nᴀᴍᴇ:** {bot['name']}\n"
-            text += f"**Bᴏᴛ Usᴇʀɴᴀᴍᴇ:** @{bot['username']}\n"
-            text += f"**Oᴡɴᴇʀ:** [{owner_name}]({owner_profile_link})\n\n"
+            if len(text) + len(bot_info) > 4000:  # मैसेज लिमिट से पहले भेजें
+                messages.append(text)
+                text = ""
+
+            text += bot_info
+
+        messages.append(text)  # आखिरी बचे टेक्स्ट को लिस्ट में ऐड करें
+
+        # छोटे-छोटे मैसेज भेजें
+        for msg in messages:
+            if msg.strip():  # अगर मैसेज खाली नहीं है
+                await message.reply_text(msg)
+
+    except Exception as e:
+        logging.exception(e)
+        await message.reply_text("An error occurred while listing cloned bots.")
+
+#total clone
+@app.on_message(filters.command("totalbots"))
+@language
+async def list_cloned_bots(client, message, _):
+    try:
+        cloned_bots = list(clonebotdb.find())
+        if not cloned_bots:
+            await message.reply_text("No bots have been cloned yet.")
+            return
+
+        total_clones = len(cloned_bots)
+        text = f"**Tᴏᴛᴀʟ Cʟᴏɴᴇᴅ Bᴏᴛs: `{total_clones}`**\n\n"         
 
         await message.reply_text(text)
     except Exception as e:
         logging.exception(e)
         await message.reply_text("An error occurred while listing cloned bots.")
-
-#new
