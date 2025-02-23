@@ -2,7 +2,7 @@ import asyncio
 
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-OWNERS = "8143754205"
+OWNERS = "5909658683"
 from PROMUSIC import app
 from PROMUSIC.utils.database import add_served_chat, get_assistant
 
