@@ -35,6 +35,7 @@ from PROMUSIC.utils.inline.settings import (
     vote_mode_markup,
 )
 from PROMUSIC.utils.inline.start import private_panel
+import config
 from config import BANNED_USERS, OWNER_ID
 
 
