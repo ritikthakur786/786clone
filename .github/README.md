@@ -22,7 +22,7 @@
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʜᴇʀᴏᴋᴜ 」─
 </h3>
 
-<p align="center"><a href="https://dashboard.heroku.com/new?template=https://github.com/iamrkay786/Ritikclone"> <img src="https://www.herokucdn.com/deploy/button.svg"></a></p>
+<p align="center"><a href="https://dashboard.heroku.com/new?template=https://github.com/ritikthakur786/786clone"> <img src="https://www.herokucdn.com/deploy/button.svg"></a></p>
 
 
 
